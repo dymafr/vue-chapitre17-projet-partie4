@@ -23,7 +23,7 @@ const state = reactive<{
     moreResults: true
 })
 
-watch(state.filters, () => {
+watch(() => state.filters.category && state.filters.priceRange, () => {
     state.page = 1;
     state.products = [];
 })
