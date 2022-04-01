@@ -6,7 +6,7 @@ export async function fetchProduct(filter: FiltersInterface, page: number): Prom
     if (filter.category !== 'all') {
         query.append('category', filter.category);
     }
-    query.append('limit', 20 + '')
+    query.append('limit', '20')
     if (page !== 1) {
         query.append('skip', ((page - 1) * 20) + '')
     }
