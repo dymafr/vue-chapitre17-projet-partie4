@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TheHeader from './components/Header.vue'
-import TheFooter from './components/Footer.vue'
+import TheHeader from './components/Header.vue';
+import TheFooter from './components/Footer.vue';
 import Boutique from './features/boutique/Boutique.vue';
 import Admin from './features/admin/Admin.vue';
 import { reactive, type Component as C } from 'vue';
@@ -8,15 +8,15 @@ import type { Page } from './interfaces';
 import { seed, seed40articles } from './data/seed';
 
 const state = reactive<{
-    page: Page
+    page: Page;
 }>({
     page: 'Boutique'
-})
+});
 
-const pages: { [s: string]: C } = {
+const pages: { [s: string]: C; } = {
     Boutique,
     Admin
-}
+};
 
 function navigate(page: Page): void {
     state.page = page;
@@ -24,7 +24,6 @@ function navigate(page: Page): void {
 
 // seed('vueprojectproducts');
 // seed40articles('vueprojectproducts');
-
 </script>
 
 <template>
