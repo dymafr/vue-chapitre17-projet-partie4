@@ -9,7 +9,7 @@ import type {
   ProductInterface,
 } from "../../interfaces";
 import { DEFAULT_FILTERS } from "./data/filters";
-import { fetchProduct } from "@/shared/services/product.service";
+import { fetchProducts } from "@/shared/services/product.service";
 import { pageKey } from "@/shared/injectionKeys/pageKey";
 
 const state = reactive<{
@@ -28,19 +28,16 @@ const state = reactive<{
   moreResults: true,
 });
 
-watch(
-  () => state.filters.category && state.filters.priceRange,
-  () => {
-    state.page = 1;
-    state.products = [];
-  }
-);
+watch([() => state.filters.priceRange, () => state.filters.category], () => {
+  state.page = 1;
+  state.products = [];
+});
 
 provide(pageKey, toRef(state, "page"));
 
 watchEffect(async () => {
   state.isLoading = true;
-  const products = await fetchProduct(state.filters, state.page);
+  const products = await fetchProducts(state.filters, state.page);
   if (Array.isArray(products)) {
     state.products = [...state.products, ...products];
     if (products.length < 20) {
@@ -110,19 +107,9 @@ const filteredProducts = computed(() => {
 
 <template>
   <div class="d-flex flex-column">
-    <Shop
-      @update-filter="updateFilter"
-      @add-product-to-cart="addProductToCart"
-      @inc-page="state.page++"
-      :products="filteredProducts"
-      :filters="state.filters"
-      :more-results="state.moreResults"
-    />
-    <Cart
-      v-if="!cartEmpty"
-      :cart="state.cart"
-      @remove-product-from-cart="removeProductFromCart"
-    />
+    <Shop @update-filter="updateFilter" @add-product-to-cart="addProductToCart" @inc-page="state.page++"
+      :products="filteredProducts" :filters="state.filters" :more-results="state.moreResults" />
+    <Cart v-if="!cartEmpty" :cart="state.cart" @remove-product-from-cart="removeProductFromCart" />
   </div>
 </template>
 
