@@ -3,6 +3,7 @@ import { useForm, useField } from "vee-validate";
 import { z } from "zod";
 import { toFormValidator } from "@vee-validate/zod";
 import { onMounted, ref } from "vue";
+import type { Category } from "@/interfaces";
 
 const firstInput = ref<HTMLInputElement | null>(null);
 
@@ -34,11 +35,11 @@ const { handleSubmit, isSubmitting } = useForm({
   validationSchema,
 });
 
-const title = useField("title");
-const image = useField("image");
-const price = useField("price");
-const description = useField("description");
-const category = useField("category");
+const title = useField<string>("title");
+const image = useField<string>("image");
+const price = useField<number>("price");
+const description = useField<string>("description");
+const category = useField<Category>("category");
 
 const trySubmit = handleSubmit(async (formValues, { resetForm }) => {
   try {
@@ -84,7 +85,7 @@ const trySubmit = handleSubmit(async (formValues, { resetForm }) => {
       </div>
       <div class="d-flex flex-column mb-20">
         <label class="mb-5">*Description</label>
-        <textarea v-model="(description.value.value as string)"></textarea>
+        <textarea v-model="description.value.value"></textarea>
         <small class="form-error" v-if="description.errorMessage.value">{{
           description.errorMessage.value
         }}</small>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ProductInterface } from "@/interfaces";
 import { pageKey } from "@/shared/injectionKeys/pageKey";
-import { inject, onUpdated, ref, watch } from "vue";
+import { inject, ref, watch } from "vue";
 import ShopProduct from "./ShopProduct.vue";
 
 const props = defineProps<{
@@ -48,18 +48,23 @@ watch(page, () => {
 
 <style lang="scss" scoped>
 @use "@/assets/scss/mixins" as m;
+
 .grid {
   display: grid;
   grid-template-columns: 1fr;
+
   @include m.md {
     grid-template-columns: 1fr 1fr;
   }
+
   @include m.lg {
     grid-template-columns: 1fr 1fr 1fr;
   }
+
   @include m.xl {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
+
   grid-auto-rows: 400px;
   gap: 20px;
 }
