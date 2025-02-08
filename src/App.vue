@@ -1,51 +1,47 @@
 <script setup lang="ts">
-import TheHeader from "./components/Header.vue";
-import TheFooter from "./components/Footer.vue";
-import Boutique from "./features/boutique/Boutique.vue";
-import Admin from "./features/admin/Admin.vue";
-import { reactive, type Component as C } from "vue";
-import type { Page } from "./interfaces";
-import { seed, seed40articles } from "./data/seed";
+import AppHeader from './components/AppHeader.vue'
+import AppFooter from './components/AppFooter.vue'
+import AppBoutique from './features/boutique/AppBoutique.vue'
+import AppAdmin from './features/admin/AppAdmin.vue'
+import { ref, type Component as C } from 'vue'
+import type { Page } from './interfaces'
+// import { seed, seed40articles } from './data/seed'
 
-const state = reactive<{
-  page: Page;
-}>({
-  page: "Boutique",
-});
+const page = ref<Page>('AppBoutique')
 
 const pages: { [s: string]: C } = {
-  Boutique,
-  Admin,
-};
-
-function navigate(page: Page): void {
-  state.page = page;
+  AppBoutique,
+  AppAdmin,
 }
 
-// seed('vueprojectproducts');
-// seed40articles('vueprojectproducts');
+function navigate(newPage: Page): void {
+  page.value = newPage
+}
+
+// seed('vueprojectproducts')
+// seed40articles('vueprojectproducts')
 </script>
 
 <template>
   <div class="app-container">
-    <TheHeader @navigate="navigate" :page="state.page" class="header" />
+    <AppHeader @navigate="navigate" :page="page" class="header" />
     <div class="app-content">
       <Suspense>
-        <Component :is="pages[state.page]" />
+        <Component :is="pages[page]" />
       </Suspense>
     </div>
-    <TheFooter class="footer hide-xs" />
+    <AppFooter class="footer hide-xs" />
   </div>
 </template>
 
 <style lang="scss">
-@use "./assets/scss/base.scss" as *;
-@use "./assets/scss/debug.scss" as *;
+@use './assets/scss/base.scss' as *;
+@use './assets/scss/debug.scss' as *;
 
 .app-container {
   height: 100vh;
   display: grid;
-  grid-template-areas: "header" "app-content" "footer";
+  grid-template-areas: 'header' 'app-content' 'footer';
   grid-template-rows: 48px auto 48px;
 }
 

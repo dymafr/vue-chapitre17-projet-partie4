@@ -1,61 +1,61 @@
 <script setup lang="ts">
-import { useForm, useField } from "vee-validate";
-import { z } from "zod";
-import { toFormValidator } from "@vee-validate/zod";
-import { onMounted, ref } from "vue";
-import type { Category } from "@/interfaces";
+import { useForm, useField } from 'vee-validate'
+import { z } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
+import { onMounted, ref } from 'vue'
+import type { Category } from '@/interfaces'
 
-const firstInput = ref<HTMLInputElement | null>(null);
+const firstInput = ref<HTMLInputElement | null>(null)
 
 onMounted(() => {
-  firstInput.value?.focus();
-});
+  firstInput.value?.focus()
+})
 
-const required = { required_error: "Veuillez renseigner ce champ" };
+const required = { required_error: 'Veuillez renseigner ce champ' }
 
-const validationSchema = toFormValidator(
+const validationSchema = toTypedSchema(
   z.object({
     title: z
       .string(required)
-      .min(1, { message: "Le titre doit faire au moins 1 caractère" })
-      .max(20, { message: "Le titre doit faire moins de 10 caractères" }),
+      .min(1, { message: 'Le titre doit faire au moins 1 caractère' })
+      .max(20, { message: 'Le titre doit faire moins de 20 caractères' }),
     image: z.string(required),
     price: z
       .number(required)
-      .min(0, { message: "Le prix doit être superieur à 0" })
-      .max(15000, { message: "Le prix doit être inferieur à 15 000" }),
+      .min(0, { message: 'Le prix doit être superieur à 0' })
+      .max(15000, { message: 'Le prix doit être inferieur à 15 000' }),
     description: z
       .string(required)
-      .min(10, { message: "La description doit faire au moins 10 caractères" }),
+      .min(10, { message: 'La description doit faire au moins 10 caractères' }),
     category: z.string(required),
-  })
-);
+  }),
+)
 
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema,
-});
+})
 
-const title = useField<string>("title");
-const image = useField<string>("image");
-const price = useField<number>("price");
-const description = useField<string>("description");
-const category = useField<Category>("category");
+const title = useField<string>('title')
+const image = useField<string>('image')
+const price = useField<number>('price')
+const description = useField<string>('description')
+const category = useField<Category>('category')
 
 const trySubmit = handleSubmit(async (formValues, { resetForm }) => {
   try {
-    await fetch("https://restapi.fr/api/projetproducts", {
-      method: "POST",
+    await fetch('https://restapi.fr/api/projetproducts', {
+      method: 'POST',
       body: JSON.stringify(formValues),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-    });
-    resetForm();
-    firstInput.value?.focus();
+    })
+    resetForm()
+    firstInput.value?.focus()
   } catch (e) {
-    console.log(e);
+    console.log(e)
   }
-});
+})
 </script>
 
 <template>
@@ -102,9 +102,7 @@ const trySubmit = handleSubmit(async (formValues, { resetForm }) => {
           category.errorMessage.value
         }}</small>
       </div>
-      <button class="btn btn-primary" :disabled="isSubmitting">
-        Sauvegarder
-      </button>
+      <button class="btn btn-primary" :disabled="isSubmitting">Sauvegarder</button>
     </form>
   </div>
 </template>
