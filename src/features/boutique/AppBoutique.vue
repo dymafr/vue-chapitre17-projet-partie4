@@ -26,18 +26,23 @@ watch([() => filters.value.priceRange, () => filters.value.category], () => {
 
 provide(pageKey, page)
 
-watchEffect(async () => {
-  isLoading.value = true
-  const fetchedProducts = await fetchProducts(filters.value, page.value)
-  if (Array.isArray(fetchedProducts)) {
-    products.value = [...products.value, ...fetchedProducts]
-    if (fetchedProducts.length < 20) {
-      moreResults.value = false
+watchEffect(() => {
+  const loadProducts = async () => {
+    isLoading.value = true
+    moreResults.value = true
+    const fetchedProducts = await fetchProducts(filters.value, page.value)
+    if (Array.isArray(fetchedProducts)) {
+      products.value = [...products.value, ...fetchedProducts]
+      if (fetchedProducts.length < 20) {
+        moreResults.value = false
+      }
+    } else {
+      products.value = [...products.value, fetchedProducts]
     }
-  } else {
-    products.value = [...products.value, fetchedProducts]
+    isLoading.value = false
   }
-  isLoading.value = false
+
+  void loadProducts()
 })
 
 function addProductToCart(productId: string): void {

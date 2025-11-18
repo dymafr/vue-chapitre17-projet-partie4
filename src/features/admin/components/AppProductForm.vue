@@ -11,22 +11,22 @@ onMounted(() => {
   firstInput.value?.focus()
 })
 
-const required = { required_error: 'Veuillez renseigner ce champ' }
+const required = { error: 'Veuillez renseigner ce champ' }
 
 const validationSchema = toTypedSchema(
   z.object({
     title: z
       .string(required)
-      .min(1, { message: 'Le titre doit faire au moins 1 caractère' })
-      .max(20, { message: 'Le titre doit faire moins de 20 caractères' }),
+      .min(1, { error: 'Le titre doit faire au moins 1 caractère' })
+      .max(20, { error: 'Le titre doit faire moins de 20 caractères' }),
     image: z.string(required),
     price: z
       .number(required)
-      .min(0, { message: 'Le prix doit être superieur à 0' })
-      .max(15000, { message: 'Le prix doit être inferieur à 15 000' }),
+      .min(0, { error: 'Le prix doit être superieur à 0' })
+      .max(15000, { error: 'Le prix doit être inferieur à 15 000' }),
     description: z
       .string(required)
-      .min(10, { message: 'La description doit faire au moins 10 caractères' }),
+      .min(10, { error: 'La description doit faire au moins 10 caractères' }),
     category: z.string(required),
   }),
 )
